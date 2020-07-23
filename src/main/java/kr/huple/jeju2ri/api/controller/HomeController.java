@@ -27,6 +27,10 @@ public class HomeController {
         this.codeService = codeService;
     }
 
+    /**
+     * 홈 API
+     * @return
+     */
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object getList() {
 
