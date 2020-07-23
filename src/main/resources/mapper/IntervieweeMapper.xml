@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.IntervieweeMapper">
+
+    <select id="findByIntervieweeId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.IntervieweeDescResponse">
+		SELECT KOR_NM
+		     , ENG_NM
+		     , INTERVIEWEE_DESC
+		     , INTERVIEWEE_CORP
+		     , INTERVIEWEE_POSITION
+		     , LINK_CD
+		     , LINK_URL
+		     , RPSNT_IMAGE_URL
+		  FROM INTERVIEWEE_TB
+		 WHERE 1 = 1
+		   AND INTERVIEWEE_ID = #{intervieweeId}
+	</select>
+
+</mapper>

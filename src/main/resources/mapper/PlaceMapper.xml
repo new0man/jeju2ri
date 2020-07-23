@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PlaceMapper">
+
+    <select id="findByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceDescResponse">
+		SELECT A.PLACE_ID
+		     , A.PLACE_NM
+		     , A.PLACE_SYNP AS PLACE_OUTLINE
+		     , A.PLACE_DESC
+		     , A.PLACE_FAC_INFO
+		     , A.RPSNT_IMAGE_URL
+		     , A.PLACE_LAT
+		     , A.PLACE_LNG
+		     , A.PLACE_LOCT_CD1
+		     , A.PLACE_LOCT_CD2
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.PLACE_LOCT_CD1) AS LARGE_LOCATION
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.PLACE_LOCT_CD2) AS SMALL_LOCATION
+		  FROM PLACE01_TB A
+		 WHERE 1 = 1
+		   AND A.PLACE_ID = #{placeId}
+	</select>
+
+	<select id="findAll" resultType="kr.huple.jeju2ri.api.model.response.PlaceDescResponse">
+		SELECT A.PLACE_ID
+		     , A.PLACE_NM
+		     , A.PLACE_SYNP AS PLACE_OUTLINE
+		     , A.PLACE_DESC
+		     , A.PLACE_FAC_INFO
+		     , A.RPSNT_IMAGE_URL
+		     , A.PLACE_LAT
+		     , A.PLACE_LNG
+		     , A.PLACE_LOCT_CD1
+		     , A.PLACE_LOCT_CD2
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.PLACE_LOCT_CD1) AS LARGE_LOCATION
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.PLACE_LOCT_CD2) AS SMALL_LOCATION
+		  FROM PLACE01_TB A
+		 WHERE 1 = 1
+		   AND A.STATE = '1'
+	</select>
+
+	<select id="getPlaceCategory" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceCategoryResponse">
+		SELECT SEQ_NO
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.LARGE_CATEGORY_CD) AS LARGE_CATEGORY
+		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.SMALL_CATEGORY_CD) AS SMALL_CATEGORY
+		  FROM PLACE02_TB A
+		 WHERE A.PLACE_ID = #{placeId}
+	</select>
+
+</mapper>

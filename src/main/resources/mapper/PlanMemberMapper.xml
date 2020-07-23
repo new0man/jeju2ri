@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PlanMemberMapper">
+
+    <select id="findByPlanId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlanMemberResponse">
+		SELECT A.PLAN_ID
+		     , A.SEQ_NO
+		     , A.CUSTOMER_ID
+		     , A.AUTH
+		     , B.NICKNAME
+		     , B.JOIN_METHOD
+		     , B.THUMBNAIL_IMAGE
+		     , B.PROFILE_IMAGE
+		  FROM PLAN_MEMBER_TB A
+		     , CUSTOMER_TB B
+		 WHERE 1 = 1
+		   AND A.PLAN_ID = #{planId}
+		   AND A.PLAN_LEAVE_DT IS NULL
+		   AND B.CUSTOMER_ID = A.CUSTOMER_ID
+	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanMember">
+		INSERT INTO PLAN_MEMBER_TB (
+			  PLAN_ID
+			, SEQ_NO
+			, CUSTOMER_ID
+			, PLAN_JOIN_DT
+			, AUTH
+		) VALUES (
+			  #{planId}
+			, (SELECT NVL(MAX(SEQ_NO), 0) + 1 FROM PLAN_MEMBER_TB X WHERE PLAN_ID = #{planId})
+			, #{customerId}
+			, SYSDATE
+			, #{auth}
+		)
+	</insert>
+
+	<update id="delete">
+		UPDATE PLAN_MEMBER_TB
+		   SET PLAN_LEAVE_DT = NOW()
+		 WHERE PLAN_ID = #{planId}
+		   AND CUSTOMER_ID = #{customerId}
+	</update>
+
+	<update id="edit">
+		UPDATE PLAN_MEMBER_TB
+		   SET AUTH = #{auth}
+		 WHERE PLAN_ID = #{planId}
+		   AND CUSTOMER_ID = #{customerId}
+	</update>
+
+</mapper>

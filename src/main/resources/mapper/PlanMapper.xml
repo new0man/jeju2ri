@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PlanMapper">
+
+    <select id="findByCustomerId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlanResponse">
+		SELECT A.PLAN_ID
+		     , A.TITLE
+		     , A.PLAN_START_DATE
+		     , A.PLAN_END_DATE
+		  FROM PLAN_TB A
+		     , PLAN_MEMBER_TB B
+		 WHERE 1 = 1
+		   AND B.PLAN_ID = A.PLAN_ID
+		   AND B.CUSTOMER_ID = #{customerId}
+	</select>
+
+	<select id="getPlanId" resultType="String">
+		SELECT 'PLAN' || LPAD(PLAN_SEQ.NEXT_VALUE, 16, '0')
+	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.Plan">
+		INSERT INTO PLAN_TB (
+			  PLAN_ID
+			, TITLE
+			, PLAN_START_DATE
+			, PLAN_END_DATE
+			, COMPANION_TYPE_CD
+			, CREATE_ID
+			, CREATE_DT
+			, UPDATE_ID
+			, UPDATE_DT
+		) VALUES (
+			  #{planId}
+			, #{title}
+			, #{planStartDate}
+			, #{planEndDate}
+			, #{companionTypeCd}
+			, #{createId}
+			, NOW()
+			, #{createId}
+			, NOW()
+		)
+	</insert>
+
+</mapper>

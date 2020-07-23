@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PlanDayMapper">
+
+    <select id="findByPlanId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlanDayResponse">
+		SELECT PLAN_SEQ_NO
+		     , PLAN_DATE
+		     , NOTICE
+		     , NOTICE_DT
+		  FROM PLAN_DAY_TB
+		 WHERE PLAN_ID = #{planId}
+	</select>
+
+	<insert id="addPlanDay" parameterType="kr.huple.jeju2ri.api.model.PlanDay">
+		INSERT INTO PLAN_DAY_TB (
+			  PLAN_ID
+			, PLAN_SEQ_NO
+			, PLAN_DATE
+		) VALUES (
+			  #{planId}
+			, (SELECT NVL(MAX(PLAN_SEQ_NO), 0) + 1 FROM PLAN_DAY_TB WHERE PLAN_ID = #{planId})
+			, #{planDate}
+		)
+	</insert>
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PlanDayScheduleMapper">
+
+	<select id="findByPk" parameterType="kr.huple.jeju2ri.api.model.PlanDaySchedule" resultType="kr.huple.jeju2ri.api.model.response.PlanDayScheduleResponse">
+		SELECT A.PLAN_ID
+		     , A.PLAN_SEQ_NO
+		     , A.PLAN_DATE
+		     , A.SCHEDULE_SEQ_NO
+		     , A.GUBUN
+		     , A.PLACE_ID
+		     , A.POST_ID
+		     , A.SPOT_ID
+		     , DECODE(A.GUBUN, 'PLACE', B.RPSNT_IMAGE_URL, 'POST', C.RPSNT_IMAGE_URL, D.IMAGE_URL) AS RPSNT_IMAGE_URL
+		     , DECODE(A.GUBUN, 'PLACE', B.PLACE_NM, 'POST', E.PLACE_NM, D.SPOT_NM) AS PLACE_NM
+		     , DECODE(A.GUBUN, 'PLACE', B.PLACE_OUTLINE, 'POST', C.TITLE, D.SPOT_ADDR) AS TITLE
+		     , DECODE(A.GUBUN, 'PLACE', B.MAP_SCOPE, 'POST', E.MAP_SCOPE, NULL) AS MAP_SCOPE
+		     , DECODE(A.GUBUN, 'PLACE', B.DECISION_RADIUS, 'POST', E.DECISION_RADIUS, NULL) AS DECISION_RADIUS
+		     , DECODE(A.GUBUN, 'PLACE', B.LEAD_TIME, 'POST', E.LEAD_TIME, NULL) AS LEAD_TIME
+
+		     , DECODE(A.GUBUN, 'PLACE', B.PLACE_LAT, 'POST', E.PLACE_LAT, D.SPOT_LAT) AS PLACE_LAT
+		     , DECODE(A.GUBUN, 'PLACE', B.PLACE_LNG, 'POST', E.PLACE_LNG, D.SPOT_LNG) AS PLACE_LNG
+
+		     , DECODE(A.GUBUN, 'SSPOT', D.SPOT_TIME, 'ESPOT', D.SPOT_TIME, NULL) AS SPOT_TIME
+
+
+		     , CASE WHEN A.GUBUN = 'PLACE' THEN (SELECT CD_NM FROM CODE_TB WHERE CD = B2.LARGE_CATEGORY_CD)
+		            WHEN A.GUBUN = 'POST' THEN (SELECT CD_NM FROM CODE_TB WHERE CD = E2.LARGE_CATEGORY_CD) END AS LARGE_CATEGORY_CD
+		     , CASE WHEN A.GUBUN = 'PLACE' THEN (SELECT CD_NM FROM CODE_TB WHERE CD = B2.SMALL_CATEGORY_CD)
+		            WHEN A.GUBUN = 'POST' THEN (SELECT CD_NM FROM CODE_TB WHERE CD = E2.SMALL_CATEGORY_CD) END AS SMALL_CATEGORY_CD
+		     , DECODE(A.GUBUN, 'SSPOT', 0, 'ESPOT', 9999, A.SORT_ORDER) AS SORT_ORDER
+		  FROM PLAN_DAY_SCHEDULE_TB A
+		     , PLACE01_TB B
+		     , PLACE02_TB B2
+		     , POST_TB C
+		     , SPOT_TB D
+		     , PLACE01_TB E
+		     , PLACE02_TB E2
+		 WHERE 1 = 1
+		   AND A.PLAN_ID = #{planId}
+		   AND A.PLAN_SEQ_NO = #{planSeqNo}
+		   AND A.STATE = '1'
+		   AND B.PLACE_ID(+) = A.PLACE_ID
+		   AND B2.PLACE_ID(+) = B.PLACE_ID
+		   AND B2.SEQ_NO(+) = '1'
+		   AND C.POST_ID(+) = A.POST_ID
+		   AND E.PLACE_ID(+) = C.PLACE_ID
+		   AND E2.PLACE_ID(+) = E.PLACE_ID
+		   AND E2.SEQ_NO(+) = '1'
+		   AND D.SPOT_ID(+) = A.SPOT_ID
+		 ORDER BY A.PLAN_DATE, DECODE(A.GUBUN, 'SSPOT', 0, 'ESPOT', 9999, A.SORT_ORDER), A.SCHEDULE_SEQ_NO
+	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanDaySchedule">
+		INSERT INTO PLAN_DAY_SCHEDULE_TB (
+			  PLAN_ID
+			, PLAN_SEQ_NO
+			, PLAN_DATE
+			, SCHEDULE_SEQ_NO
+			, GUBUN
+			, PLACE_ID
+			, POST_ID
+			, SPOT_ID
+			, SORT_ORDER
+			, STATE
+		) VALUES (
+			  #{planId}
+			, #{seqNo}
+			, #{planDate}
+			, (SELECT NVL(MAX(PLAN_SEQ_NO), 0) + 1 FROM PLAN_DAY_DESC_TB WHERE PLAN_ID = #{planId} AND PLAN_SEQ_NO = #{planSeqNo})
+			, #{gubun}
+			, #{placeId}
+			, #{postId}
+			, #{spotId}
+			, (SELECT NVL(MAX(SORT_ORDER), 0) + 1 FROM PLAN_DAY_DESC_TB WHERE PLAN_ID = #{planId} AND PLAN_SEQ_NO = #{planSeqNo})
+			, '1'
+		)
+	</insert>
+
+	<delete id="delete" parameterType="kr.huple.jeju2ri.api.model.PlanDaySchedule">
+		DELETE
+		  FROM PLAN_DAY_DESC_TB
+		 WHERE PLAN_ID = #{planId}
+		   AND PLAN_SEQ_NO = #{planSeqNo}
+		   AND SCHEDULE_SEQ_NO = #{scheduleSeqNo}
+	</delete>
+
+	<insert id="edit" parameterType="kr.huple.jeju2ri.api.model.PlanDaySchedule">
+		INSERT INTO PLAN_DAY_DESC_TB (PLAN_ID, PLAN_SEQ_NO, PLAN_DATE, SCHEDULE_SEQ_NO, GUBUN, PLACE_ID, POST_ID, SPOT_ID, STATE, SORT_ORDER, NOTICE, NOTICE_DT)
+		SELECT PLAN_ID
+		     , #{movePlanSeqNo}
+		     , #{movePlanDate}
+		     , (SELECT NVL(MAX(PLAN_SEQ_NO), 0) + 1 FROM PLAN_DAY_DESC_TB WHERE PLAN_ID = #{planId} AND PLAN_SEQ_NO = #{movePlanSeqNo})
+		     , GUBUN
+		     , PLACE_ID
+		     , POST_ID
+		     , SPOT_ID
+		     , STATE
+		     , (SELECT NVL(MAX(SORT_ORDER), 0) + 1 FROM PLAN_DAY_DESC_TB WHERE PLAN_ID = #{planId} AND PLAN_SEQ_NO = #{movePlanSeqNo})
+		     , NOTICE
+		     , NOTICE_DT
+		  FROM PLAN_DAY_DESC_TB
+		 WHERE PLAN_ID = #{planId}
+		   AND PLAN_SEQ_NO = #{planSeqNo}
+		   AND SCHEDULE_SEQ_NO = #{scheduleSeqNo}
+	</insert>
+
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.HomeMapper">
+
+    <select id="top10Post" resultType="kr.huple.jeju2ri.api.model.response.HomePostResponse">
+		SELECT 'POST' AS GUBUN
+		     , A.POST_ID
+		     , A.PLACE_ID
+		     , A.TITLE
+		     , A.SUB_TITLE
+		     , A.RPSNT_IMAGE_URL
+		     , C.USER_NM AS WRITER
+		     , A.CREATE_DT AS WRITE_DATE
+		  FROM POST_TB A
+		     , HOME_POST_TB B
+		     , USER_TB C
+		 WHERE 1 = 1
+		   AND B.POST_ID = A.POST_ID
+		   AND B.GUBUN = 'T'
+		   AND C.USER_ID = A.UPDATE_ID
+	</select>
+
+    <select id="barrierFreePost" resultType="kr.huple.jeju2ri.api.model.response.HomePostResponse">
+		SELECT 'POST' AS GUBUN
+		     , A.POST_ID
+		     , A.PLACE_ID
+		     , A.TITLE
+		     , A.SUB_TITLE
+		     , A.RPSNT_IMAGE_URL
+		     , C.USER_NM AS WRITER
+		     , A.CREATE_DT AS WRITE_DATE
+		  FROM POST_TB A
+		     , HOME_POST_TB B
+		     , USER_TB C
+		 WHERE 1 = 1
+		   AND B.POST_ID = A.POST_ID
+		   AND B.GUBUN = 'B'
+		   AND C.USER_ID = A.UPDATE_ID
+	</select>
+
+    <select id="bestPostByCategory" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.HomePostResponse">
+		SELECT 'POST' AS GUBUN
+		     , B.POST_ID
+		     , B.PLACE_ID
+		     , B.TITLE
+		     , B.SUB_TITLE
+		     , B.RPSNT_IMAGE_URL
+		     , C.USER_NM AS WRITER
+		     , B.UPDATE_DT AS WRITE_DATE
+		  FROM CATEGORY_POST_TB A
+		     , POST_TB B
+		     , USER_TB C
+		 WHERE 1 = 1
+		   AND A.CATEGORY_CD = #{cd}
+		   AND B.POST_ID = A.POST_ID
+		   AND C.USER_ID = B.UPDATE_ID
+	</select>
+
+    <select id="postByCategory" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.HomePostResponse">
+		SELECT X.*
+		  FROM (
+				SELECT 'POST' AS GUBUN
+				     , A.POST_ID
+				     , A.PLACE_ID
+				     , A.TITLE
+				     , A.SUB_TITLE
+				     , A.RPSNT_IMAGE_URL
+				     , C.USER_NM AS WRITER
+				     , A.UPDATE_DT AS WRITE_DATE
+				  FROM POST_TB A
+				     , PLACE02_TB B
+				     , USER_TB C
+				 WHERE B.PLACE_ID = A.PLACE_ID
+				   AND C.USER_ID = A.UPDATE_ID
+				   AND B.LARGE_CATEGORY_CD = #{cd}
+				 UNION ALL
+				 SELECT 'PLACE' AS GUBUN
+				      , '' AS POST_ID
+				      , A.PLACE_ID
+				      , '[관광지]' || A.PLACE_NM AS TITLE
+				      , A.PLACE_SYNP AS SUB_TITLE
+				      , A.RPSNT_IMAGE_URL
+				      , C.USER_NM AS WRITER
+				      , A.UPDATE_DT AS WRITE_DATE
+				   FROM PLACE01_TB A
+				      , PLACE02_TB B
+				      , USER_TB C
+				  WHERE B.PLACE_ID = A.PLACE_ID
+				    AND C.USER_ID = A.CREATE_ID
+				    AND B.LARGE_CATEGORY_CD = #{cd}
+		        ) X
+	</select>
+
+</mapper>

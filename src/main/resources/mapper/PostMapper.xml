@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PostMapper">
+
+    <select id="findByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PostResponse">
+		SELECT A.POST_ID
+		     , A.PLACE_ID
+		     , A.TITLE
+		     , A.SUB_TITLE
+		     , A.RPSNT_IMAGE_URL
+		     , (SELECT COM_TP_CD FROM PLACE01_TB WHERE PLACE_ID = A.PLACE_ID) AS COMPANION_TYPE
+		  FROM POST_TB A
+		 WHERE 1 = 1
+		   AND A.PLACE_ID = #{placeId}
+		   AND A.STATE = '1'
+	</select>
+
+	<select id="findByPostId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PostDescResponse">
+		SELECT A.POST_ID
+		     , A.PLACE_ID
+		     , A.TITLE
+		     , A.SUB_TITLE
+		     , A.RPSNT_IMAGE_URL
+		     , (SELECT COM_TP_CD FROM PLACE01_TB WHERE PLACE_ID = A.PLACE_ID) AS COMPANION_TYPE
+		     , A.COURSE
+		     , A.INTERVIEWEE_ID
+		  FROM POST_TB A
+		 WHERE 1 = 1
+		   AND A.POST_ID = #{placeId}
+		   AND A.STATE = '1'
+	</select>
+
+</mapper>
