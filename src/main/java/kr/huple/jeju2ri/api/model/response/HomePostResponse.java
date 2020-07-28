@@ -16,7 +16,7 @@ public class HomePostResponse {
     private String placeId;
     private String title;
     private String subTitle;
-    private String companionTpCd;
+    private String companionType;
     private String writer;
     private String writeDate;
 
