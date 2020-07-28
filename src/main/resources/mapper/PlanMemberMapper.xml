@@ -21,7 +21,7 @@
 		   AND B.CUSTOMER_ID = A.CUSTOMER_ID
 	</select>
 
-	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanMember">
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanMemberDto">
 		INSERT INTO PLAN_MEMBER_TB (
 			  PLAN_ID
 			, SEQ_NO
@@ -32,7 +32,7 @@
 			  #{planId}
 			, (SELECT NVL(MAX(SEQ_NO), 0) + 1 FROM PLAN_MEMBER_TB X WHERE PLAN_ID = #{planId})
 			, #{customerId}
-			, SYSDATE
+			, NOW()
 			, #{auth}
 		)
 	</insert>

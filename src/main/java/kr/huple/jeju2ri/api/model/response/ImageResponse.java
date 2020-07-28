@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ImageResponse {
 
-    private String imageId;
+    private Integer seqNo;
     private String imageUrl;
 
 }

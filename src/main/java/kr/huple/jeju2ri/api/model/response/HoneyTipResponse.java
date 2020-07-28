@@ -16,7 +16,7 @@ public class HoneyTipResponse {
     private String title;
     private String contents;
     private String writerImageUrl;
-    private String writer;
+    private String nickname;
     private String writeDate;
     private Integer favoriteCnt;
 

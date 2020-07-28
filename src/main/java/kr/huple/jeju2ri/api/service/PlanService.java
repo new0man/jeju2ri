@@ -1,7 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.PlanMapper;
-import kr.huple.jeju2ri.api.model.Plan;
+import kr.huple.jeju2ri.api.model.PlanDto;
 import kr.huple.jeju2ri.api.model.response.PlanResponse;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,16 @@ public class PlanService {
 
     public String getPlanId() { return planMapper.getPlanId(); }
 
-    public void add(Plan plan) { planMapper.add(plan); }
+    public void add(PlanDto plan) { planMapper.add(plan); }
 
     public void delete(String planId) { planMapper.delete(planId); }
+
+    public void editTitle(PlanDto planDto) {
+        planMapper.editTitle(planDto);
+    }
+
+    public void editImage(PlanDto planDto) {
+        planMapper.editImage(planDto);
+    }
+
 }

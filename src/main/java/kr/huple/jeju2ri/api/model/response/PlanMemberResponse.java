@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 public class PlanMemberResponse {
 
-    private String planId;
     private Integer seqNo;
     private String customerId;
     private String auth;

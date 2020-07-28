@@ -13,7 +13,7 @@
 		 WHERE PLAN_ID = #{planId}
 	</select>
 
-	<insert id="addPlanDay" parameterType="kr.huple.jeju2ri.api.model.PlanDay">
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanDayDto">
 		INSERT INTO PLAN_DAY_TB (
 			  PLAN_ID
 			, PLAN_SEQ_NO
@@ -24,5 +24,12 @@
 			, #{planDate}
 		)
 	</insert>
+
+	<delete id="delete" parameterType="kr.huple.jeju2ri.api.model.PlanDayDto">
+		DELETE
+		  FROM PLAN_DAY_TB
+		 WHERE PLAN_ID = #{planId}
+		   AND PLAN_SEQ_NO = #{planSeqNo}
+	</delete>
 
 </mapper>

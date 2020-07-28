@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.CustomerMapper">
+
+	<insert id="add"
+			parameterType="kr.huple.jeju2ri.api.model.CustomerDto">
+		INSERT INTO CUSTOMER_TB (
+		       CUSTOMER_ID
+			 , NICKNAME
+			 , EMAIL
+			 , GENDER
+			 , BIRTHYEAR
+			 , THUMBNAIL_IMAGE
+			 , PROFILE_IMAGE
+			 , AGREE_PUSH
+			 , JOIN_METHOD
+			 , SNS_ID
+			 , JOIN_DT
+			 , STATE
+		) VALUES (
+			   'CUSTOMER' || LPAD(CUSTOMER_SEQ.NEXT_VALUE, 12, '0')
+			 , #{nickname}
+			 , #{email}
+			 , #{gender}
+			 , #{birthyear}
+			 , #{thumbnailImage}
+			 , #{profileImage}
+			 , #{agreePush}
+			 , #{joinMethod}
+			 , #{snsId}
+			 , NOW()
+			 , '1'
+		)
+	</insert>
+
+	<update id="edit" parameterType="kr.huple.jeju2ri.api.model.CustomerDto">
+		UPDATE CUSTOMER_TB
+		   SET NICKNAME = #{nickname}
+		     , THUMBNAIL_IMAGE = #{thumbnailImage}
+		     , PROFILE_IMAGE = #{profileImage}
+		 WHERE CUSTOMER_ID = #{customerId}
+	</update>
+
+	<select id="findByEmail" parameterType="String" resultType="Integer">
+		SELECT COUNT(1)
+		  FROM CUSTOMER_TB
+		 WHERE EMAIL = #{email}
+		 LIMIT 1
+	</select>
+
+	<select id="findByNickname" parameterType="String" resultType="Integer">
+		SELECT COUNT(1)
+		  FROM CUSTOMER_TB
+		 WHERE NICKNAME = #{nickname}
+		 LIMIT 1
+	</select>
+
+	<select id="findBySnsId" parameterType="kr.huple.jeju2ri.api.model.CustomerDto" resultType="kr.huple.jeju2ri.api.model.response.CustomerResponse">
+		SELECT *
+		  FROM CUSTOMER_TB
+		 WHERE 1 = 1
+		   AND JOIN_METHOD = #{joinMethod}
+		   AND SNS_ID = #{snsId}
+	</select>
+
+	<select id="findAll" resultType="kr.huple.jeju2ri.api.model.response.CustomerResponse">
+		SELECT *
+		  FROM CUSTOMER_TB
+		 WHERE STATE = '1'
+	</select>
+
+	<select id="findByCustomerId" parameterType="String"
+			resultType="kr.huple.jeju2ri.api.model.response.CustomerResponse">
+		SELECT *
+		  FROM CUSTOMER_TB
+		 WHERE CUSTOMER_ID = #{customerId}
+	</select>
+
+</mapper>

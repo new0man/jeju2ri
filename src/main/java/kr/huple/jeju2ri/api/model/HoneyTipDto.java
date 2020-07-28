@@ -1,6 +1,9 @@
 package kr.huple.jeju2ri.api.model;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -8,9 +11,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HoneyTip {
+public class HoneyTipDto {
 
-    private Integer tipId;
+    private Long tipId;
     private String placeId;
     private String title;
     private String addr;
@@ -18,6 +21,7 @@ public class HoneyTip {
     private String contents;
     private Double tipLat;
     private Double tipLng;
+    private String imageId;
     private Integer hitCnt;
     private Integer favoriteCnt;
     private String state;
@@ -25,5 +29,7 @@ public class HoneyTip {
     private String createDt;
     private String updateId;
     private String updateDt;
+
+    private List<ImageDto> images;
 
 }

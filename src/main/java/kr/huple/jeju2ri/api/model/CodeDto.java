@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Code {
+public class CodeDto {
 
     private String cd;
     private String upperCd;

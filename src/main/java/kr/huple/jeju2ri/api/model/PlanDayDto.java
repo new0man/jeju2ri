@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanDay {
+public class PlanDayDto {
 
     private String planId;
     private String planDate;

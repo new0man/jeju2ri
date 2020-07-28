@@ -1,13 +1,12 @@
 package kr.huple.jeju2ri.api.controller;
 
-import kr.huple.jeju2ri.api.model.Code;
+import kr.huple.jeju2ri.api.model.CodeDto;
 import kr.huple.jeju2ri.api.model.response.HomeCategoryResponse;
 import kr.huple.jeju2ri.api.model.response.HomePostResponse;
 import kr.huple.jeju2ri.api.model.response.HomeResponse;
 import kr.huple.jeju2ri.api.model.response.HomeTodayResponse;
 import kr.huple.jeju2ri.api.service.CodeService;
 import kr.huple.jeju2ri.api.service.HomeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +47,7 @@ public class HomeController {
 
         HomeCategoryResponse homeCategory = null;
 
-        List<Code> categoryList = codeService.findByUpperCd("A01");
+        List<CodeDto> categoryList = codeService.findByUpperCd("A01");
 
         System.out.println("categoryList : " + categoryList.size());
 

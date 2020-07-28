@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.PopularKeywordMapper">
+
+    <select id="findAll" resultType="kr.huple.jeju2ri.api.model.response.PopularKeywordResponse">
+		SELECT A.SEQ_NO
+		     , B.PLACE_ID
+		     , B.PLACE_NM
+		  FROM POPULAR_KEYWORD_TB A
+		     , PLACE01_TB B
+		 WHERE B.PLACE_ID = A.PLACE_ID
+		 ORDER BY A.SEQ_NO
+	</select>
+
+</mapper>

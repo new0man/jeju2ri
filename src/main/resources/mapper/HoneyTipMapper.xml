@@ -15,10 +15,84 @@
 		     , A.HIT_CNT
 		     , A.FAVORITE_CNT
 		     , A.IMAGE_ID
+		     , B.NICKNAME
+			 , B.THUMBNAIL_IMAGE AS WRITER_IMAGE_URL
+		     , A.CREATE_DT AS WRITE_DATE
 		  FROM HONEY_TIP_TB A
+		     , CUSTOMER_TB B
 		 WHERE 1 = 1
 		   AND A.PLACE_ID = #{placeId}
 		   AND A.STATE = '1'
+		   AND B.CUSTOMER_ID = A.UPDATE_ID
 	</select>
+
+	<select id="findByTipId" parameterType="Long" resultType="kr.huple.jeju2ri.api.model.response.HoneyTipResponse">
+		SELECT A.TIP_ID
+		     , A.TITLE
+		     , A.CONTENTS
+		     , A.ADDR
+		     , A.ALIAS_NM
+		     , A.TIP_LAT
+		     , A.TIP_LNG
+		     , A.HIT_CNT
+		     , A.FAVORITE_CNT
+		     , A.IMAGE_ID
+		  FROM HONEY_TIP_TB A
+		 WHERE 1 = 1
+		   AND A.TIP_ID = #{tipId}
+	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.HoneyTipDto">
+		INSERT INTO HONEY_TIP_TB (
+		      TIP_ID
+			, PLACE_ID
+			, TITLE
+			, ADDR
+			, ALIAS_NM
+			, CONTENTS
+			, TIP_LAT
+			, TIP_LNG
+			, STATE
+			, IMAGE_ID
+			, CREATE_ID
+			, CREATE_DT
+			, UPDATE_ID
+			, UPDATE_DT
+		) VALUES (
+			  (SELECT NVL(MAX(TIP_ID), 0) + 1 FROM HONEY_TIP_TB)
+			, #{placeId}
+			, #{title}
+			, #{addr}
+			, #{aliasNm}
+			, #{contents}
+			, #{tipLat}
+			, #{tipLng}
+			, '1'
+			, #{imageId}
+			, #{createId}
+			, NOW()
+			, #{createId}
+			, NOW()
+		)
+	</insert>
+
+	<update id="edit" parameterType="kr.huple.jeju2ri.api.model.HoneyTipDto">
+		UPDATE HONEY_TIP_TB
+		   SET TITLE = #{title}
+			 , ADDR = #{addr}
+			 , ALIAS_NM = #{aliasNm}
+			 , CONTENTS = #{contents}
+			 , TIP_LAT = #{tipLat}
+			 , TIP_LNG = #{tipLng}
+			 , UPDATE_ID = #{updateId}
+			 , UPDATE_DT = NOW()
+		 WHERE TIP_ID = #{tipId}
+	</update>
+
+	<update id="delete" parameterType="Long">
+		UPDATE HONEY_TIP_TB
+		   SET STATE = '0'
+		 WHERE TIP_ID = #{tipId}
+	</update>
 
 </mapper>

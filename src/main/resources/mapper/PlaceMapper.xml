@@ -7,7 +7,7 @@
     <select id="findByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceDescResponse">
 		SELECT A.PLACE_ID
 		     , A.PLACE_NM
-		     , A.PLACE_SYNP AS PLACE_OUTLINE
+		     , A.PLACE_OUTLINE
 		     , A.PLACE_DESC
 		     , A.PLACE_FAC_INFO
 		     , A.RPSNT_IMAGE_URL
@@ -25,7 +25,7 @@
 	<select id="findAll" resultType="kr.huple.jeju2ri.api.model.response.PlaceDescResponse">
 		SELECT A.PLACE_ID
 		     , A.PLACE_NM
-		     , A.PLACE_SYNP AS PLACE_OUTLINE
+		     , A.PLACE_OUTLINE
 		     , A.PLACE_DESC
 		     , A.PLACE_FAC_INFO
 		     , A.RPSNT_IMAGE_URL

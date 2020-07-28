@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.huple.jeju2ri.api.mapper.CodeMapper">
 
-    <select id="findByUpperCd" parameterType="String" resultType="kr.huple.jeju2ri.api.model.Code">
+    <select id="findByUpperCd" parameterType="String" resultType="kr.huple.jeju2ri.api.model.CodeDto">
 		SELECT CD
 		     , UPPER_CD
 		     , CD_NM

@@ -8,13 +8,20 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanDaySchedule {
+public class PlanDayScheduleDto {
 
     private String planId;
     private Integer planSeqNo;
     private String planDate;
-    private Integer planScheduleSeqNo;
+    private Integer scheduleSeqNo;
     private String gubun;
+    private String placeId;
+    private String postId;
     private String spotId;
+    private Integer sortOrder;
+
+    private String afterPlanId;
+    private Integer afterPlanSeqNo;
+    private String afterPlanDate;
 
 }

@@ -4,8 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.huple.jeju2ri.api.mapper.ImageMapper">
 
+	<select id="getImageId" resultType="String">
+		SELECT 'IMAGE' || LPAD(IMAGE_SEQ.NEXT_VALUE, 15, '0')
+	</select>
+
     <select id="findByImageId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.ImageResponse">
-		SELECT IMAGE_ID
+		SELECT SEQ_NO
 		     , IMAGE_URL
 		  FROM IMAGE_INFO_TB
 		 WHERE 1 = 1
@@ -13,5 +17,17 @@
 		 ORDER BY
 		       SEQ_NO
 	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.ImageDto">
+		INSERT INTO IMAGE_INFO_TB (
+			  IMAGE_ID
+			, SEQ_NO
+			, IMAGE_URL
+		) VALUES (
+			  #{imageId}
+			, (SELECT NVL(MAX(SEQ_NO), 0) + 1 FROM IMAGE_INFO_TB WHERE IMAGE_ID = #{imageId})
+			, #{imageUrl}
+		)
+	</insert>
 
 </mapper>

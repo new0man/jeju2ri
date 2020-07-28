@@ -72,25 +72,29 @@
 				  FROM POST_TB A
 				     , PLACE02_TB B
 				     , USER_TB C
-				 WHERE B.PLACE_ID = A.PLACE_ID
+				 WHERE 1 = 1
+				   AND B.SEQ_NO = 1
+				   AND B.PLACE_ID = A.PLACE_ID
 				   AND C.USER_ID = A.UPDATE_ID
 				   AND B.LARGE_CATEGORY_CD = #{cd}
 				 UNION ALL
-				 SELECT 'PLACE' AS GUBUN
-				      , '' AS POST_ID
-				      , A.PLACE_ID
-				      , '[관광지]' || A.PLACE_NM AS TITLE
-				      , A.PLACE_SYNP AS SUB_TITLE
-				      , A.RPSNT_IMAGE_URL
-				      , C.USER_NM AS WRITER
-				      , A.UPDATE_DT AS WRITE_DATE
-				   FROM PLACE01_TB A
-				      , PLACE02_TB B
-				      , USER_TB C
-				  WHERE B.PLACE_ID = A.PLACE_ID
-				    AND C.USER_ID = A.CREATE_ID
-				    AND B.LARGE_CATEGORY_CD = #{cd}
-		        ) X
+				SELECT 'PLACE' AS GUBUN
+				     , '' AS POST_ID
+				     , A.PLACE_ID
+				     , '[관광지]' || A.PLACE_NM AS TITLE
+				     , A.PLACE_OUTLINE AS SUB_TITLE
+				     , A.RPSNT_IMAGE_URL
+				     , C.USER_NM AS WRITER
+				     , A.UPDATE_DT AS WRITE_DATE
+				  FROM PLACE01_TB A
+				     , PLACE02_TB B
+				     , USER_TB C
+				 WHERE 1 = 1
+				   AND B.SEQ_NO = 1
+				   AND B.PLACE_ID = A.PLACE_ID
+				   AND C.USER_ID = A.CREATE_ID
+				   AND B.LARGE_CATEGORY_CD = #{cd}
+		       ) X
 	</select>
 
 </mapper>

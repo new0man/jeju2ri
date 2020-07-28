@@ -1,7 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.PlanDayMapper;
-import kr.huple.jeju2ri.api.model.PlanDay;
+import kr.huple.jeju2ri.api.model.PlanDayDto;
 import kr.huple.jeju2ri.api.model.response.PlanDayResponse;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,6 @@ public class PlanDayService {
         return planDayMapper.findByPlanId(planId);
     }
 
-    public void add(PlanDay planDay) { planDayMapper.add(planDay); }
+    public void add(PlanDayDto planDay) { planDayMapper.add(planDay); }
 
 }

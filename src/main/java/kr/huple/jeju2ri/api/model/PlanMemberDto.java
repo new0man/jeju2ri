@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanMember {
+public class PlanMemberDto {
 
     private String planId;
     private String customerId;

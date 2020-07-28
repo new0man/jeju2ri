@@ -1,7 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.PlanMemberMapper;
-import kr.huple.jeju2ri.api.model.PlanMember;
+import kr.huple.jeju2ri.api.model.PlanMemberDto;
 import kr.huple.jeju2ri.api.model.response.PlanMemberResponse;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +20,13 @@ public class PlanMemberService {
         return planMemberMapper.findByPlanId(planId);
     }
 
-    public void add(PlanMember paramPlanMember) { planMemberMapper.add(paramPlanMember); }
+    public void add(PlanMemberDto paramPlanMember) { planMemberMapper.add(paramPlanMember); }
 
-    public void delete(PlanMember planMember) {
+    public void delete(PlanMemberDto planMember) {
         planMemberMapper.delete(planMember);
     }
 
-    public void edit(PlanMember planMember) {
+    public void edit(PlanMemberDto planMember) {
         planMemberMapper.edit(planMember);
     }
 }

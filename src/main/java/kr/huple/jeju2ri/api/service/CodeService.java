@@ -1,7 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.CodeMapper;
-import kr.huple.jeju2ri.api.model.Code;
+import kr.huple.jeju2ri.api.model.CodeDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class CodeService {
         this.codeMapper = codeMapper;
     }
 
-    public List<Code> findByUpperCd(String upperCd) {
+    public List<CodeDto> findByUpperCd(String upperCd) {
         return codeMapper.findByUpperCd(upperCd);
     }
 

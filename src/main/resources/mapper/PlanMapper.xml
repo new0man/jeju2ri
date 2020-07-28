@@ -16,17 +16,28 @@
 		   AND B.CUSTOMER_ID = #{customerId}
 	</select>
 
+	<select id="findByPlanId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlanResponse">
+		SELECT A.PLAN_ID
+		     , A.TITLE
+		     , A.PLAN_START_DATE
+		     , A.PLAN_END_DATE
+		  FROM PLAN_TB A
+		 WHERE 1 = 1
+		   AND A.PLAN_ID = #{planId}
+	</select>
+
 	<select id="getPlanId" resultType="String">
 		SELECT 'PLAN' || LPAD(PLAN_SEQ.NEXT_VALUE, 16, '0')
 	</select>
 
-	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.Plan">
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.PlanDto">
 		INSERT INTO PLAN_TB (
 			  PLAN_ID
 			, TITLE
 			, PLAN_START_DATE
 			, PLAN_END_DATE
 			, COMPANION_TYPE_CD
+			, STATE
 			, CREATE_ID
 			, CREATE_DT
 			, UPDATE_ID
@@ -37,11 +48,34 @@
 			, #{planStartDate}
 			, #{planEndDate}
 			, #{companionTypeCd}
+			, '1'
 			, #{createId}
 			, NOW()
 			, #{createId}
 			, NOW()
 		)
 	</insert>
+
+	<update id="delete" parameterType="String">
+		UPDATE PLAN_TB
+		   SET STATE = '9'
+		 WHERE PLAN_ID = #{planId}
+	</update>
+
+	<update id="editTitle" parameterType="kr.huple.jeju2ri.api.model.PlanDto">
+		UPDATE PLAN_TB
+		   SET TITLE = #{title}
+		     , UPDATE_ID = #{updateId}
+		     , UPDATE_DT = NOW()
+		 WHERE PLAN_ID = #{planId}
+	</update>
+
+	<update id="editImage" parameterType="kr.huple.jeju2ri.api.model.PlanDto">
+		UPDATE PLAN_TB
+		   SET RPSNT_IMAGE_URL = #{rpsntImageUrl}
+		     , UPDATE_ID = #{updateId}
+		     , UPDATE_DT = NOW()
+		 WHERE PLAN_ID = #{planId}
+	</update>
 
 </mapper>

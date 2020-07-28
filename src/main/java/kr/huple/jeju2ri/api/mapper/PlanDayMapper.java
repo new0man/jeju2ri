@@ -1,6 +1,6 @@
 package kr.huple.jeju2ri.api.mapper;
 
-import kr.huple.jeju2ri.api.model.PlanDay;
+import kr.huple.jeju2ri.api.model.PlanDayDto;
 import kr.huple.jeju2ri.api.model.response.PlanDayResponse;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,6 +11,6 @@ public interface PlanDayMapper {
 
     public List<PlanDayResponse> findByPlanId(String planId);
 
-    public void add(PlanDay planDay);
+    public void add(PlanDayDto planDay);
 
 }

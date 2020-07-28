@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.SearchMapper">
+
+	<select id="findByKeyword" parameterType="kr.huple.jeju2ri.api.model.SearchDto"
+			resultType="kr.huple.jeju2ri.api.model.response.SearchResponse">
+		SELECT 'PLACE' AS GUBUN
+			 , A.PLACE_ID
+			 , '' AS POST_ID
+			 , A.PLACE_NM AS TITLE
+			 , A.COMPANION_TYPE_CD
+			 , B.LARGE_CATEGORY_CD
+			 , B.SMALL_CATEGORY_CD
+		  FROM PLACE01_TB A
+		     , PLACE02_TB B
+		 WHERE B.PLACE_ID = A.PLACE_ID
+		<if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(locations)">
+		   AND A.PLACE_LOCT_CD2 IN
+		<foreach item="item" index="index" collection="locations" open="(" separator="," close=")">
+				#{item}
+		</foreach>
+		</if>
+		   AND A.PLACE_NM LIKE '%' || #{keyword} || '%'
+		UNION ALL
+		SELECT 'POST'
+			 , A.TITLE
+			 , B.PLACE_ID
+			 , A.POST_ID
+			 , B.COMPANION_TYPE_CD
+			 , C.LARGE_CATEGORY_CD
+			 , C.SMALL_CATEGORY_CD
+		  FROM POST_TB A
+		     , PLACE01_TB B
+		     , PLACE02_TB C
+		 WHERE B.PLACE_ID = A.PLACE_ID
+		   AND C.PLACE_ID = B.PLACE_ID
+		<if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(locations)">
+		   AND B.PLACE_LOCT_CD2 IN
+			<foreach item="item" index="index" collection="locations" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		   AND A.TITLE LIKE '%' || #{keyword} || '%'
+	</select>
+
+	<select id="findByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.SearchResponse">
+		SELECT 'POST' AS GUBUN
+		     , A.TITLE
+		     , A.PLACE_ID AS PLACE_ID
+		     , A.POST_ID
+		     , B.COMPANION_TYPE_CD
+		     , C.LARGE_CATEGORY_CD
+		     , C.SMALL_CATEGORY_CD
+		     , D.USER_NM AS WRITER
+		  FROM POST_TB A
+		     , PLACE01_TB B
+		     , PLACE02_TB C
+		     , USER_TB D
+		 WHERE B.PLACE_ID = A.PLACE_ID
+		   AND C.PLACE_ID = B.PLACE_ID
+		   AND D.USER_ID = A.CREATE_ID
+		   AND A.PLACE_ID = #{placeId}
+		UNION ALL
+		SELECT 'PLACE' AS GUBUN
+		     , A.PLACE_NM AS TITLE
+		     , A.PLACE_ID
+		     , '' AS POST_ID
+		     , A.COMPANION_TYPE_CD
+		     , B.LARGE_CATEGORY_CD
+		     , B.SMALL_CATEGORY_CD
+		     , C.USER_NM AS WITER
+		  FROM PLACE01_TB A
+		     , PLACE02_TB B
+		     , USER_TB C
+		 WHERE B.PLACE_ID = A.PLACE_ID
+		   AND C.USER_ID = A.CREATE_ID
+		   AND A.PLACE_ID = #{placeId}
+	</select>
+
+</mapper>

@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PlanDayResponse {
 
-    private String planId;
     private Integer planSeqNo;
     private String planDate;
 

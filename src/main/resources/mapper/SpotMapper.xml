@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.SpotMapper">
+
+	<select id="getSpotId" resultType="String">
+		SELECT 'SPOT' || LPAD(SPOT_SEQ.NEXT_VALUE, 16, '0')
+	</select>
+
+	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.SpotDto">
+		INSERT INTO SPOT_TB (
+		  SPOT_ID
+		, SPOT_NM
+		, SPOT_LAT
+		, SPOT_LNG
+		<if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(spotTime)">
+			, SPOT_TIME
+		</if>
+		, SPOT_ADDR
+		, SPOT_ADDR_DESC
+		, SPOT_CONTENTS
+		, IMAGE_URL
+		, CREATE_ID
+		, CREATE_DT
+		, UPDATE_ID
+		, UPDATE_DT
+		) VALUES (
+		  #{spotId}
+		, #{spotNm}
+		, #{spotLat}
+		, #{spotLng}
+		<if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(spotTime)">
+			, #{spotTime}
+		</if>
+		, #{spotAddr}
+		, #{spotAddrDesc}
+		, #{spotContents}
+		, #{imageUrl}
+		, #{createId}
+		, NOW()
+		, #{updateId}
+		, NOW()
+		)
+	</insert>
+
+</mapper>
+

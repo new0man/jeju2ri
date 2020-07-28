@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Spot {
+public class SpotDto {
 
     private String planId;
     private Integer planSeqNo;
@@ -23,10 +23,11 @@ public class Spot {
     private String spotTime;
     private String spotAddr;
     private String spotAddrDesc;
+    private String spotContents;
     private String imageUrl;
     private String createId;
     private String updateId;
 
-    private MultipartFile photo;
+    private MultipartFile image;
 
 }

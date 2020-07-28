@@ -1,7 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.SpotMapper;
-import kr.huple.jeju2ri.api.model.Spot;
+import kr.huple.jeju2ri.api.model.SpotDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +17,7 @@ public class SpotService {
         return spotMapper.getSpotId();
     }
 
-    public void add(Spot spot) {
+    public void add(SpotDto spot) {
         spotMapper.add(spot);
     }
 

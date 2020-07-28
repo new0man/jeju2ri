@@ -2,6 +2,8 @@ package kr.huple.jeju2ri.api.controller;
 
 import kr.huple.jeju2ri.api.model.response.*;
 import kr.huple.jeju2ri.api.service.*;
+import kr.huple.jeju2ri.util.Word;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,9 @@ public class PostController {
 
         // Post 상세
         PostDescResponse postDesc = postService.findByPostId(postId);
+        if(postDesc == null) {
+            return Word.NO_POST_MSG; // 포스트가 없습니다.
+        }
         // Place 상세
         String placeId = postDesc.getPlaceId();
         PlaceDescResponse placeDesc = placeService.findByPlaceId(placeId);
