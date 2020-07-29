@@ -9,11 +9,13 @@
 		     , A.TITLE
 		     , A.PLAN_START_DATE
 		     , A.PLAN_END_DATE
+		     , CASE WHEN B.AUTH = 'L' THEN TRUE ELSE FALSE END AS isLeader
 		  FROM PLAN_TB A
 		     , PLAN_MEMBER_TB B
 		 WHERE 1 = 1
 		   AND B.PLAN_ID = A.PLAN_ID
 		   AND B.CUSTOMER_ID = #{customerId}
+		   AND A.PLAN_END_DATE &gt;= SYSDATE
 	</select>
 
 	<select id="findByPlanId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlanResponse">

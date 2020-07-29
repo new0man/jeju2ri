@@ -59,7 +59,12 @@ public class PlanController {
      */
     @GetMapping(value = "/my-plans/{customerId}")
     public Object getMyPlans(@PathVariable("customerId") String customerId) throws Exception {
-        return planService.findByCustomerId(customerId);
+        List<PlanResponse> plans = planService.findByCustomerId(customerId);
+        for (int i = 0; i < plans.size(); i++) {
+            List<PlanDayResponse> planDays = planDayService.findByPlanId(plans.get(i).getPlanId());
+            plans.get(i).setPlanDays(planDays);
+        }
+        return plans;
     }
 
     /**

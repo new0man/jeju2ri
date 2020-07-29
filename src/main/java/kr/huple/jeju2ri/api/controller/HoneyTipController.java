@@ -75,14 +75,6 @@ public class HoneyTipController {
     @PostMapping(value = "/honey-tips", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object add(@RequestBody HoneyTipDto param) throws Exception {
         String imageId = imageService.getImageId();
-
-        for (int i = 0; i < param.getImages().size(); i++) {
-            ImageDto image = new ImageDto();
-            image.setImageId(imageId);
-            image.setImageUrl(param.getImages().get(i).getImageUrl());
-            imageService.add(image);
-        }
-
         param.setImageId(imageId);
         honeyTipService.add(param);
         return null;

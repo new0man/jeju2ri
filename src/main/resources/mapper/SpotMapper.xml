@@ -8,6 +8,12 @@
 		SELECT 'SPOT' || LPAD(SPOT_SEQ.NEXT_VALUE, 16, '0')
 	</select>
 
+	<select id="findBySpotId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.SpotResponse">
+		SELECT *
+		  FROM SPOT_TB
+		 WHERE SPOT_ID = #{spotId}
+	</select>
+
 	<insert id="add" parameterType="kr.huple.jeju2ri.api.model.SpotDto">
 		INSERT INTO SPOT_TB (
 		  SPOT_ID

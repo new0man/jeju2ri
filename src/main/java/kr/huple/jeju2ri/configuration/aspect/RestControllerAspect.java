@@ -13,6 +13,7 @@ public class RestControllerAspect {
 
     @Around("execution(* kr.huple.jeju2ri.api.controller.*.*(..))")
     public RestResponse<Object> restResponseHandler(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("joinPoint " + joinPoint.getSignature().getName());
         return new RestResponse<>(HttpStatus.OK.value(), "success", joinPoint.proceed());
     }
 

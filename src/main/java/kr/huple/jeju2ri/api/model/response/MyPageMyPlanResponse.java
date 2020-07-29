@@ -10,14 +10,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanResponse {
+public class MyPageMyPlanResponse {
 
     private String planId;
     private String title;
     private String planStartDate;
     private String planEndDate;
-    private Boolean isLeader;
+    private Integer memberCnt;
 
-    private List<PlanDayResponse> planDays;
+    private List<MyPageMyPlanScheduleResponse> myPlanSchedules;
 
 }

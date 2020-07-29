@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.huple.jeju2ri.api.mapper.MyPageMapper">
+
+    <select id="findPlaceByCustomerId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.CategoryMyPlanResponse">
+        SELECT X.CD AS LARGE_CATEGORY_CD
+             , X.CD_NM AS LARGE_CATEGORY
+             , COUNT(Y.LARGE_CATEGORY_CD) AS PLACE_COUNT
+          FROM CODE_TB X
+             , (SELECT C.LARGE_CATEGORY_CD
+             	  FROM PLAN_MEMBER_TB A
+             	     , PLAN_DAY_SCHEDULE_TB B
+             	     , PLACE02_TB C
+             	 WHERE 1 = 1
+             	   AND A.CUSTOMER_ID = #{customerId}
+             	   AND B.PLAN_ID = A.PLAN_ID
+             	   AND C.SEQ_NO = 1
+             	   AND C.PLACE_ID = B.PLACE_ID) Y
+         WHERE 1 = 1
+           AND X.UPPER_CD = 'A01'
+           AND Y.LARGE_CATEGORY_CD(+) = X.CD
+         GROUP BY X.CD
+                , X.CD_NM
+         ORDER BY X.SORT_ORDER
+    </select>
+
+    <select id="findPlanByCustomerId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.MyPageMyPlanResponse">
+        SELECT B.PLAN_ID
+             , B.TITLE
+             , B.PLAN_START_DATE
+             , B.PLAN_END_DATE
+             , (SELECT COUNT(1) FROM PLAN_MEMBER_TB WHERE PLAN_ID = A.PLAN_ID AND PLAN_LEAVE_DT IS NULL) AS MEMBER_CNT
+		  FROM PLAN_MEMBER_TB A
+		     , PLAN_TB B
+		 WHERE 1 = 1
+		   AND A.CUSTOMER_ID = #{customerId}
+		   AND B.PLAN_ID = A.PLAN_ID
+    </select>
+
+    <select id="findCategoryPlan" parameterType="kr.huple.jeju2ri.api.model.MyPageDto" resultType="kr.huple.jeju2ri.api.model.response.MyPageMyPlanResponse">
+        SELECT DISTINCT B.PLAN_ID
+             , B.TITLE
+             , B.PLAN_START_DATE
+             , B.PLAN_END_DATE
+             , (SELECT COUNT(1) FROM PLAN_MEMBER_TB WHERE PLAN_ID = B.PLAN_ID AND PLAN_LEAVE_DT IS NULL) AS MEMBER_CNT
+          FROM PLAN_MEMBER_TB A
+             , PLAN_TB B
+             , PLAN_DAY_SCHEDULE_TB C
+             , PLACE02_TB D
+         WHERE 1 = 1
+           AND A.CUSTOMER_ID = #{customerId}
+           AND B.PLAN_ID = A.PLAN_ID
+           AND C.PLAN_ID = A.PLAN_ID
+           AND D.PLACE_ID = C.PLACE_ID
+           AND D.SEQ_NO = 1
+           AND D.LARGE_CATEGORY_CD = #{largeCategoryCd}
+    </select>
+
+    <select id="findCategorySchedule" parameterType="kr.huple.jeju2ri.api.model.MyPageDto" resultType="kr.huple.jeju2ri.api.model.response.MyPageMyPlanScheduleResponse">
+        SELECT C.PLAN_SEQ_NO
+             , C.GUBUN
+             , CASE WHEN C.GUBUN = 'PLACE' THEN (SELECT PLACE_NM FROM PLACE01_TB WHERE PLACE_ID = C.PLACE_ID)
+                    WHEN C.GUBUN = 'POST' THEN (SELECT TITLE FROM POST_TB WHERE POST_ID = C.POST_ID) END AS TITLE
+          FROM PLAN_MEMBER_TB A
+             , PLAN_TB B
+             , PLAN_DAY_SCHEDULE_TB C
+             , PLACE02_TB D
+         WHERE 1 = 1
+           AND A.CUSTOMER_ID = #{customerId}
+           AND A.PLAN_ID = #{planId}
+           AND B.PLAN_ID = A.PLAN_ID
+           AND C.PLAN_ID = A.PLAN_ID
+           AND D.PLACE_ID = C.PLACE_ID
+           AND D.SEQ_NO = 1
+           AND D.LARGE_CATEGORY_CD = #{largeCategoryCd}
+    </select>
+
+</mapper>

@@ -14,9 +14,9 @@ public class SearchResponse {
     private String placeId;
     private String postId;
     private String title;
-    private String companionTypeCd;
-    private String largeCategoryCd;
-    private String smallCategoryCd;
+    private String companionType;
+    private String largeCategory;
+    private String smallCategory;
     private String rpsntImageUrl;
     private String writer;
     private String createDt;

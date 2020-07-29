@@ -21,10 +21,9 @@ public class PlanDayScheduleResponse {
     private String rpsntImageUrl;
     private String placeNm;
     private String title;
-    private Double placeLat;
-    private Double placeLng;
     private Integer leadTime;
     private String spotTime;
+    private Integer sortOrder;
 
     private List<PlaceCategoryResponse> categories;
 

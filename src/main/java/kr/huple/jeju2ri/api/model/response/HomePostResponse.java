@@ -14,6 +14,7 @@ public class HomePostResponse {
 
     private String postId;
     private String placeId;
+    private String rpsntImageUrl;
     private String title;
     private String subTitle;
     private String companionType;
