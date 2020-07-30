@@ -10,6 +10,7 @@
 		     , A.PLAN_START_DATE
 		     , A.PLAN_END_DATE
 		     , CASE WHEN B.AUTH = 'L' THEN TRUE ELSE FALSE END AS isLeader
+		     , A.CREATE_DT
 		  FROM PLAN_TB A
 		     , PLAN_MEMBER_TB B
 		 WHERE 1 = 1

@@ -8,8 +8,10 @@ import kr.huple.jeju2ri.util.Word;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -201,21 +203,21 @@ public class PlanController {
     /**
      * 일정 이미지 변경
      * @param planId
-     * @param planDto
+     * @param image
      * @return
      * @throws Exception
      */
     @PatchMapping(value = "/{planId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object editImage(@PathVariable("planId") String planId
-            , PlanDto planDto) throws Exception {
+            , MultipartFile image) throws Exception {
 
-        FileDto file = new FileDto();
-        file.setPhoto(planDto.getImage());
-        RestResponse<?> restResponse = (RestResponse<?>) fileUpload.fileUpload(file);
+        RestResponse<?> restResponse = (RestResponse<?>) fileUpload.singleFileUpload(image);
 
-        planDto.setPlanId(planId);
-        planDto.setRpsntImageUrl(restResponse.getResult().toString());
-        planService.editImage(planDto);
+        PlanDto param = new PlanDto();
+
+        param.setPlanId(planId);
+        param.setRpsntImageUrl(restResponse.getResult().toString());
+        planService.editImage(param);
 
         return null;
 
@@ -292,8 +294,7 @@ public class PlanController {
         if(spot.getImage() != null &&
                 spot.getImage().getOriginalFilename() != null &&
                 !"".equals(spot.getImage().getOriginalFilename())) {
-            fileDto.setPhoto(spot.getImage());
-            RestResponse<?> restResponse = (RestResponse<?>) fileUpload.fileUpload(fileDto);
+            RestResponse<?> restResponse = (RestResponse<?>) fileUpload.singleFileUpload(spot.getImage());
             spot.setImageUrl(restResponse.getResult().toString());
         }
 

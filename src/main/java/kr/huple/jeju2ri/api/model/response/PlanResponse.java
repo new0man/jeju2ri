@@ -17,6 +17,7 @@ public class PlanResponse {
     private String planStartDate;
     private String planEndDate;
     private Boolean isLeader;
+    private String createDt;
 
     private List<PlanDayResponse> planDays;
 
