@@ -73,10 +73,13 @@
 				     , (SELECT COMPANION_TYPE_CD FROM PLACE01_TB WHERE PLACE_ID = A.PLACE_ID) AS COMPANION_TYPE
 				     , C.USER_NM AS WRITER
 				     , A.UPDATE_DT AS WRITE_DATE
+				     , D.PLACE_NM
 				  FROM POST_TB A
+				     , PLACE01_TB D
 				     , PLACE02_TB B
 				     , USER_TB C
 				 WHERE 1 = 1
+				   AND D.PLACE_ID = A.PLACE_ID
 				   AND B.SEQ_NO = 1
 				   AND B.PLACE_ID = A.PLACE_ID
 				   AND C.USER_ID = A.UPDATE_ID
@@ -91,6 +94,7 @@
 				     , A.COMPANION_TYPE_CD
 				     , C.USER_NM AS WRITER
 				     , A.UPDATE_DT AS WRITE_DATE
+				     , A.PLACE_NM
 				  FROM PLACE01_TB A
 				     , PLACE02_TB B
 				     , USER_TB C

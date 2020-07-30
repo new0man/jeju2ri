@@ -21,4 +21,6 @@ public class HomePostResponse {
     private String writer;
     private String writeDate;
 
+    private String placeNm;
+
 }

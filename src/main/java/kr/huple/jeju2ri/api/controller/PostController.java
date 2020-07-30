@@ -53,6 +53,26 @@ public class PostController {
         PlaceDescResponse placeDesc = placeService.findByPlaceId(placeId);
         List<PlaceCategoryResponse> placeCategories = placeService.getPlaceCategory(placeId);
         placeDesc.setCategories(placeCategories);
+
+        PlaceFacMainResponse placeFacMain = placeService.findPlaceFacByPlaceId(placeId);
+        if(placeFacMain != null) {
+            // 시절 정보
+            List<PlaceFacInfoResponse> placeFacInfos = placeService.findPlaceFacInfoByPlaceId(placeId);
+            if (!placeFacInfos.isEmpty()) {
+                placeFacMain.setPlaceFacInfos(placeFacInfos);
+            }
+            // 무장애 시설 정보
+            List<PlaceFacInfoResponse> placeBarrierFreeFacInfos = placeService.findPlaceBarrierFreeFacInfoByPlaceId(placeId);
+            if (!placeBarrierFreeFacInfos.isEmpty()) {
+                placeFacMain.setPlaceBarrierFreeFacInfos(placeBarrierFreeFacInfos);
+            }
+            List<ImageResponse> placeFacImages = imageService.findByImageId(placeFacMain.getImageId());
+            if (!placeFacImages.isEmpty()) {
+                placeFacMain.setPlaceFacImages(placeFacImages);
+            }
+            placeDesc.setPlaceFac(placeFacMain);
+        }
+
         // Interviewee 상세
         String intervieweeId = postDesc.getIntervieweeId();
         IntervieweeDescResponse intervieweeDesc = intervieweeService.findByIntervieweeId(intervieweeId);

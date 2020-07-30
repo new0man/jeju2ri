@@ -34,14 +34,40 @@ public class PlaceController {
      * @return List<PlaceDescResponse>
      */
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object findAll() {
+    public Object findAll() throws Exception {
         List<PlaceDescResponse> placeDesces = placeService.findAll();
         for(int i = 0; i < placeDesces.size(); i++) {
-            List<PlaceCategoryResponse> placeCategories = placeService.getPlaceCategory(placeDesces.get(i).getPlaceId());
+            String placeId = placeDesces.get(i).getPlaceId();
+            List<PlaceCategoryResponse> placeCategories = placeService.getPlaceCategory(placeId);
             placeDesces.get(i).setCategories(placeCategories);
+
         }
 
         return placeDesces;
+    }
+
+    public PlaceFacMainResponse getPlaceFacInfo(String placeId) throws Exception {
+
+        PlaceFacMainResponse placeFacMain = placeService.findPlaceFacByPlaceId(placeId);
+        if(placeFacMain != null) {
+            // 시절 정보
+            List<PlaceFacInfoResponse> placeFacInfos = placeService.findPlaceFacInfoByPlaceId(placeId);
+            if (!placeFacInfos.isEmpty()) {
+                placeFacMain.setPlaceFacInfos(placeFacInfos);
+            }
+            // 무장애 시설 정보
+            List<PlaceFacInfoResponse> placeBarrierFreeFacInfos = placeService.findPlaceBarrierFreeFacInfoByPlaceId(placeId);
+            if (!placeBarrierFreeFacInfos.isEmpty()) {
+                placeFacMain.setPlaceBarrierFreeFacInfos(placeBarrierFreeFacInfos);
+            }
+            // 무장애 시설 이미지
+            List<ImageResponse> placeFacImages = imageService.findByImageId(placeFacMain.getImageId());
+            if (!placeFacImages.isEmpty()) {
+                placeFacMain.setPlaceFacImages(placeFacImages);
+            }
+
+        }
+        return placeFacMain;
     }
 
     /**
@@ -50,13 +76,17 @@ public class PlaceController {
      * @return PlaceDescResponse
      */
     @GetMapping(value = "/{placeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object findByPlaceId(@PathVariable("placeId") String placeId) {
+    public Object findByPlaceId(@PathVariable("placeId") String placeId) throws Exception {
 
         PlaceMainResponse place = new PlaceMainResponse();
 
         // 관광지 상세
         PlaceDescResponse placeDesc = placeService.findByPlaceId(placeId);
         List<PlaceCategoryResponse> placeCategories = placeService.getPlaceCategory(placeDesc.getPlaceId());
+        // 시설 정보 Main Start
+        PlaceFacMainResponse placeFacMain = getPlaceFacInfo(placeId);
+        placeDesc.setPlaceFac(placeFacMain);
+        // 시설 정보 Main End
         placeDesc.setCategories(placeCategories);
 
         List<PostResponse> posts = postService.findByPlaceId(placeId);

@@ -50,5 +50,24 @@
 		)
 	</insert>
 
+	<update id="edit" parameterType="kr.huple.jeju2ri.api.model.SpotDto">
+		UPDATE SPOT_TB
+		   SET SPOT_NM = #{spotNm}
+			 , SPOT_LAT = #{spotLat}
+			 , SPOT_LNG = #{spotLng}
+			 <if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(spotTime)">
+			 , SPOT_TIME = #{spotTime}
+			 </if>
+			 , SPOT_ADDR = #{spotAddr}
+			 , SPOT_ADDR_DESC = #{spotAddrDesc}
+			 , SPOT_CONTENTS = #{spotContents}
+		     <if test="@kr.huple.jeju2ri.util.CmmnUtil@notEmpty(imageUrl)">
+			 , IMAGE_URL = #{imageUrl}
+			 </if>
+			 , UPDATE_ID = #{updateId}
+			 , UPDATE_DT = NOW()
+		 WHERE SPOT_ID = #{spotId}
+	</update>
+
 </mapper>
 

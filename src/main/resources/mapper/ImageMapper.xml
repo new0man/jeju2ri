@@ -11,6 +11,7 @@
     <select id="findByImageId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.ImageResponse">
 		SELECT SEQ_NO
 		     , IMAGE_URL
+		     , ALIAS_FILE_NM AS ALIAS_NM
 		  FROM IMAGE_INFO_TB
 		 WHERE 1 = 1
 		   AND IMAGE_ID = #{imageId}

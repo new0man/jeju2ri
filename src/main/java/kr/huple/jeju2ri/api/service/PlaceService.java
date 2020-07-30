@@ -1,8 +1,7 @@
 package kr.huple.jeju2ri.api.service;
 
 import kr.huple.jeju2ri.api.mapper.PlaceMapper;
-import kr.huple.jeju2ri.api.model.response.PlaceCategoryResponse;
-import kr.huple.jeju2ri.api.model.response.PlaceDescResponse;
+import kr.huple.jeju2ri.api.model.response.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,4 +26,17 @@ public class PlaceService {
     public List<PlaceCategoryResponse> getPlaceCategory(String placeId) {
         return placeMapper.getPlaceCategory(placeId);
     }
+
+    public PlaceFacMainResponse findPlaceFacByPlaceId(String placeId) {
+        return placeMapper.findPlaceFacByPlaceId(placeId);
+    }
+
+    public List<PlaceFacInfoResponse> findPlaceFacInfoByPlaceId(String placeId) {
+        return placeMapper.findPlaceFacInfoByPlaceId(placeId);
+    }
+
+    public List<PlaceFacInfoResponse> findPlaceBarrierFreeFacInfoByPlaceId(String placeId) {
+        return placeMapper.findPlaceBarrierFreeFacInfoByPlaceId(placeId);
+    }
+
 }

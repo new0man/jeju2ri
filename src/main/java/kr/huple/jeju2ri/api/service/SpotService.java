@@ -26,4 +26,5 @@ public class SpotService {
         spotMapper.add(spot);
     }
 
+    public void edit(SpotDto spot) { spotMapper.edit(spot); }
 }

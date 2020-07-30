@@ -9,7 +9,6 @@
 		     , A.PLACE_NM
 		     , A.PLACE_OUTLINE
 		     , A.PLACE_DESC
-		     , A.PLACE_FAC_INFO
 		     , A.RPSNT_IMAGE_URL
 		     , A.PLACE_LAT
 		     , A.PLACE_LNG
@@ -27,7 +26,6 @@
 		     , A.PLACE_NM
 		     , A.PLACE_OUTLINE
 		     , A.PLACE_DESC
-		     , A.PLACE_FAC_INFO
 		     , A.RPSNT_IMAGE_URL
 		     , A.PLACE_LAT
 		     , A.PLACE_LNG
@@ -38,14 +36,38 @@
 		  FROM PLACE01_TB A
 		 WHERE 1 = 1
 		   AND A.STATE = '1'
+		 ORDER BY A.PLACE_ID
 	</select>
 
 	<select id="getPlaceCategory" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceCategoryResponse">
-		SELECT SEQ_NO
+		SELECT A.SEQ_NO
 		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.LARGE_CATEGORY_CD) AS LARGE_CATEGORY
 		     , (SELECT CD_NM FROM CODE_TB WHERE CD = A.SMALL_CATEGORY_CD) AS SMALL_CATEGORY
 		  FROM PLACE02_TB A
 		 WHERE A.PLACE_ID = #{placeId}
+		 ORDER BY A.SEQ_NO
+	</select>
+
+	<select id="findPlaceFacByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceFacMainResponse">
+		SELECT *
+		  FROM PLACE03_TB
+		 WHERE PLACE_ID = #{placeId}
+	</select>
+
+	<select id="findPlaceFacInfoByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceFacInfoResponse">
+		SELECT *
+		  FROM PLACE04_TB
+		 WHERE PLACE_ID = #{placeId}
+		   AND GUBUN = '8'
+		 ORDER BY SEQ_NO
+	</select>
+
+	<select id="findPlaceBarrierFreeFacInfoByPlaceId" parameterType="String" resultType="kr.huple.jeju2ri.api.model.response.PlaceFacInfoResponse">
+		SELECT *
+		  FROM PLACE04_TB
+		 WHERE PLACE_ID = #{placeId}
+		   AND GUBUN = '9'
+		 ORDER BY SEQ_NO
 	</select>
 
 </mapper>
