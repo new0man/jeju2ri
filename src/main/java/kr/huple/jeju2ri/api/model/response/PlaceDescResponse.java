@@ -17,7 +17,6 @@ public class PlaceDescResponse {
     private String placeNm;
     private String placeOutline;
     private String placeDesc;
-    private String placeFacInfo;
     private String rpsntImageUrl;
     // 위경도
     private Double placeLat;
@@ -27,5 +26,7 @@ public class PlaceDescResponse {
     private String smallLocation;
     // Category
     private List<PlaceCategoryResponse> categories;
+
+    private PlaceFacMainResponse placeFac;
 
 }

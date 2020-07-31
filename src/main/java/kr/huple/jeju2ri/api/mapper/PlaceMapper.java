@@ -1,7 +1,6 @@
 package kr.huple.jeju2ri.api.mapper;
 
-import kr.huple.jeju2ri.api.model.response.PlaceCategoryResponse;
-import kr.huple.jeju2ri.api.model.response.PlaceDescResponse;
+import kr.huple.jeju2ri.api.model.response.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,5 +13,11 @@ public interface PlaceMapper {
     public List<PlaceDescResponse> findAll();
 
     List<PlaceCategoryResponse> getPlaceCategory(String placeId);
+
+    public PlaceFacMainResponse findPlaceFacByPlaceId(String placeId);
+
+    public List<PlaceFacInfoResponse> findPlaceFacInfoByPlaceId(String placeId);
+
+    public List<PlaceFacInfoResponse> findPlaceBarrierFreeFacInfoByPlaceId(String placeId);
 
 }

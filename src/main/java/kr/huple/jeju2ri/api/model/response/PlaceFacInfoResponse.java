@@ -2,16 +2,17 @@ package kr.huple.jeju2ri.api.model.response;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageResponse {
+public class PlaceFacInfoResponse {
 
-    private Integer seqNo;
-    private String imageUrl;
-    private String aliasNm;
+    private String keyName;
+    private String keyValue;
 
 }

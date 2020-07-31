@@ -9,4 +9,5 @@ public interface SpotMapper {
     public String getSpotId();
     public void add(SpotDto spot);
     public SpotResponse findBySpotId(String spotId);
+    public void edit(SpotDto spot);
 }
